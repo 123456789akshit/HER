@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤍 My Mommy</title>
+
+<style>
+/* Reset & Body */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#121212;
+  transition: background 4s ease;
+  font-family:'Inter', sans-serif;
+  overflow:hidden;
+}
+
+/* Room container */
+.room {
+  position:relative;
+  width:80%;
+  max-width:300px;
+  height:400px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+}
+
+/* Lamp */
+.lamp {
+  width:90px;
+  height:130px;
+  border-radius:45px 45px 12px 12px;
+  background:#3a3a3a;
+  cursor:pointer;
+  transition: background 2s ease, box-shadow 3s ease;
+}
+
+.lamp.on {
+  background:#ffdca0;
+  box-shadow:0 0 160px 60px rgba(255,220,160,0.7);
+}
+
+/* Glow */
+.glow {
+  position:absolute;
+  top:-100px;
+  width:100%;
+  max-width:300px;
+  height:260px;
+  background:radial-gradient(circle, rgba(255,220,160,0.45), transparent 70%);
+  opacity:0;
+  transition: opacity 3s ease;
+  pointer-events:none;
+}
+
+.glow.on { opacity:1; }
+
+/* Particle (sentence) */
+.particle {
+  position:absolute;
+  font-size:16px;
+  color:rgba(60,60,60,0.85);
+  white-space:nowrap;
+  text-align:center;
+  max-width:220px;
+  left:0; right:0; margin:0 auto;
+  opacity:0;
+  pointer-events:none;
+}
+
+.particle span {
+  opacity:0;
+  display:inline-block;
+  animation: fadeInLetter 0.05s forwards;
+}
+
+@keyframes fadeInLetter {
+  to { opacity:1; }
+}
+
+/* Heart pulse */
+.heart {
+  display:inline-block;
+  color: rgba(255,100,100,0.8);
+  margin-left:6px;
+  animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+  0%{transform:scale(1);}
+  50%{transform:scale(1.3);}
+  100%{transform:scale(1);}
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity:0; }
+  20% { opacity:0.6; }
+  100% { transform: translateY(-160px); opacity:0; }
+}
+
+@media(max-width:500px){
+  .particle { font-size:14px; }
+}
+</style>
+</head>
+
+<body>
+<div class="room">
+  <div class="glow" id="glow"></div>
+  <div class="lamp" id="lamp"></div>
+</div>
+
+<script>
+const lamp = document.getElementById("lamp");
+const glow = document.getElementById("glow");
+
+const sentences = [
+  "mommy, you make everything calm",
+  "i feel safe with you, mommy",
+  "rest now, mommy, i’m here",
+  "mommy, you’re my comfort",
+  "my heart feels warm with you, mommy",
+  "everything is soft when i think of you, mommy",
+  "mommy, i love how you care for me",
+  "stay close, mommy, i feel happy",
+  "mommy, you make life gentle and sweet",
+  "i’m so lucky to have you, mommy",
+  "my baby heart smiles with you, mommy",
+  "thank you for being my calm, mommy 🤍"
+];
+
+lamp.addEventListener("click", () => {
+  lamp.classList.add("on");
+  glow.classList.add("on");
+  document.body.style.background = "#f4efe6";
+
+  let index = 0;
+
+  const interval = setInterval(() => {
+    if(index >= sentences.length){
+      clearInterval(interval);
+      return;
+    }
+
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.bottom = "60px";
+
+    // Random horizontal offset for natural feel
+    const randomOffset = Math.random()*40 - 20;
+    p.style.transform = `translateX(${randomOffset}px)`;
+
+    // Wrap letters in span for fade in effect
+    const sentence = sentences[index];
+    p.innerHTML = "";
+    for(let i=0;i<sentence.length;i++){
+      const span = document.createElement("span");
+      span.innerText = sentence[i];
+      span.style.animationDelay = (i*0.05) + "s";
+      p.appendChild(span);
+    }
+
+    // Add a tiny heart occasionally
+    if(Math.random() > 0.7){
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.innerText = "❤";
+      p.appendChild(heart);
+    }
+
+    document.querySelector(".room").appendChild(p);
+
+    p.style.animation = "floatUp 9s ease forwards";
+
+    // Remove after 9s
+    setTimeout(()=>p.remove(),9000);
+
+    index++;
+  },2000);
+
+  lamp.style.pointerEvents = "none";
+});
+</script>
+</body>
+</html>

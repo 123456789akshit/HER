@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Mommy 🤍</title>
+<title>For Advika 🤍</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -13,7 +13,7 @@ body{
   justify-content:center;
   align-items:center;
   background:linear-gradient(#cce7ff,#fefae0);
-  font-family:'Inter',sans-serif;
+  font-family:sans-serif;
   overflow:hidden;
   transition:background 4s ease;
 }
@@ -30,9 +30,7 @@ body{
 }
 
 @keyframes breathe{
-  0%{transform:scale(1);}
   50%{transform:scale(1.01);}
-  100%{transform:scale(1);}
 }
 
 /* Window */
@@ -46,7 +44,7 @@ body{
   border-radius:14px;
   background:linear-gradient(#cce7ff,#fefae0);
   overflow:hidden;
-  transition:all 4s ease;
+  transition:background 4s ease;
 }
 
 /* Stars */
@@ -61,7 +59,7 @@ body{
 /* Candle */
 .candle{
   position:absolute;
-  bottom:170px;
+  bottom:180px;
   left:50%;
   transform:translateX(-50%);
   width:60px;
@@ -88,31 +86,6 @@ body{
   50%{transform:translateX(-50%) scale(1.2);}
 }
 
-/* Mirror */
-.mirror{
-  position:absolute;
-  right:20px;
-  bottom:210px;
-  width:60px;
-  height:80px;
-  border-radius:10px;
-  background:linear-gradient(#e0f7fa,#ffffff);
-  box-shadow:inset 0 0 10px rgba(0,0,0,0.2);
-  cursor:pointer;
-}
-
-/* Drawer */
-.drawer{
-  position:absolute;
-  left:20px;
-  bottom:210px;
-  width:70px;
-  height:40px;
-  background:#d7ccc8;
-  border-radius:6px;
-  cursor:pointer;
-}
-
 /* Garden */
 .garden{
   position:absolute;
@@ -131,6 +104,12 @@ body{
   transition:transform 2s ease;
 }
 
+#nameTulip{
+  font-size:22px;
+  color:#fff;
+  text-shadow:0 0 6px rgba(0,0,0,0.5);
+}
+
 /* Floating text */
 .text{
   position:absolute;
@@ -144,20 +123,8 @@ body{
 }
 
 @keyframes floatText{
-  0%{opacity:0;transform:translateY(20px)}
   20%{opacity:1}
   100%{opacity:0;transform:translateY(-140px)}
-}
-
-/* Petals */
-.petal{
-  position:absolute;
-  font-size:18px;
-  animation:petalUp 6s linear forwards;
-}
-
-@keyframes petalUp{
-  to{transform:translateY(-200px);opacity:0}
 }
 </style>
 </head>
@@ -171,85 +138,84 @@ body{
     <div class="flame"></div>
   </div>
 
-  <div class="mirror" id="mirror"></div>
-  <div class="drawer" id="drawer"></div>
-
   <div class="garden">
     <div class="tulip">🌷</div>
     <div class="tulip">🌷</div>
-    <div class="tulip" id="My Advika">🌷</div>
+    <div class="tulip" id="nameTulip"></div>
     <div class="tulip">🌷</div>
     <div class="tulip">🌷</div>
   </div>
 </div>
 
 <script>
-const room=document.getElementById("room");
-const windowEl=document.getElementById("window");
+const room = document.getElementById("room");
+const windowEl = document.getElementById("window");
+const candle = document.getElementById("candle");
+const nameTulip = document.getElementById("nameTulip");
 
-const starMessages=[
-  "you feel like home 🤍",
-  "my calm place is you",
-  "even silence feels warm with you",
-  "you matter to me deeply",
-  "i smile because of you ✨"
+const candleMessages = [
+  "mommy, you make my mornings soft",
+  "thinking of you makes me smile",
+  "you are my calm place",
+  "everything feels warm with you",
+  "this little world feels better because of you 🤍"
 ];
 
-// Night + stars
-document.getElementById("candle").addEventListener("click",()=>{
-  document.body.style.background="#0b132b";
-  windowEl.style.background="linear-gradient(#0b132b,#1c2541)";
+const starMessages = [
+  "you feel like home 🤍",
+  "even silence feels warm with you",
+  "i feel lucky knowing you",
+  "my heart feels safe here",
+  "thank you for being you ✨"
+];
 
-  starMessages.forEach((msg,i)=>{
-    const s=document.createElement("div");
-    s.className="star";
-    s.innerText="★";
-    s.style.left=30+i*35+"px";
-    s.style.top=30+(i%2)*40+"px";
-    s.style.opacity="1";
-    s.onclick=()=>{
-      const t=document.createElement("div");
-      t.className="text";
-      t.innerText=msg;
-      room.appendChild(t);
-      setTimeout(()=>t.remove(),7000);
-    };
-    windowEl.appendChild(s);
-  });
+let used = false;
 
+candle.addEventListener("click", () => {
+  if(used) return;
+  used = true;
+
+  // Candle messages
+  let i = 0;
+  const interval = setInterval(() => {
+    if(i >= candleMessages.length){
+      clearInterval(interval);
+      return;
+    }
+    const t = document.createElement("div");
+    t.className = "text";
+    t.innerText = candleMessages[i];
+    room.appendChild(t);
+    setTimeout(()=>t.remove(),8000);
+    i++;
+  }, 2500);
+
+  // Tulips bloom + Advika
   document.querySelectorAll(".tulip").forEach(t=>t.style.transform="scale(1.2)");
-  document.getElementById("nameTulip").innerText="🌷 MOMMY 🌷";
-});
+  nameTulip.innerText = "🌷 Advika 🌷";
 
-// Mirror
-document.getElementById("mirror").onclick=()=>{
-  alert("mommy, you’re beautiful inside and out 🤍");
-};
+  // Night mode after delay
+  setTimeout(() => {
+    document.body.style.background="#0b132b";
+    windowEl.style.background="linear-gradient(#0b132b,#1c2541)";
 
-// Drawer
-document.getElementById("drawer").onclick=()=>{
-  alert("a small place holding big feelings for you 💌");
-};
-
-// Flower petals on tap
-document.addEventListener("click",(e)=>{
-  const p=document.createElement("div");
-  p.className="petal";
-  p.innerText="🌸";
-  p.style.left=e.clientX+"px";
-  p.style.top=e.clientY+"px";
-  room.appendChild(p);
-  setTimeout(()=>p.remove(),6000);
-});
-
-// Secret phrases
-let typed="";
-document.addEventListener("keydown",(e)=>{
-  typed+=e.key.toLowerCase();
-  if(typed.includes("i love you baby")) alert("i love you too mommy 🤍");
-  if(typed.includes("miss you")) alert("i’m always with you");
-  if(typed.includes("good night")) alert("sleep peacefully, mommy");
-  if(typed.includes("mommy")) alert("yes baby?");
+    starMessages.forEach((msg,i)=>{
+      const s=document.createElement("div");
+      s.className="star";
+      s.innerText="★";
+      s.style.left=30+i*35+"px";
+      s.style.top=30+(i%2)*40+"px";
+      s.style.opacity="1";
+      s.onclick=()=>{
+        const t=document.createElement("div");
+        t.className="text";
+        t.innerText=msg;
+        room.appendChild(t);
+        setTimeout(()=>t.remove(),7000);
+      };
+      windowEl.appendChild(s);
+    });
+  }, 15000);
 });
 </script>
 

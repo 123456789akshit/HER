@@ -9,23 +9,23 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   height:100vh;
-  background:linear-gradient(#0b132b,#1c2541);
+  background:linear-gradient(#cce7ff,#fefae0);
   display:flex;
   justify-content:center;
   align-items:center;
   font-family:'Inter',sans-serif;
   overflow:hidden;
-  transition:background 5s ease;
+  transition:background 4s ease;
 }
 
-/* Room */
 .room{
   position:relative;
-  width:320px;
-  height:520px;
-  border-radius:20px;
-  background:#1a1a1a;
+  width:340px;
+  height:560px;
+  border-radius:22px;
+  background:#fffaf0;
   overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
 }
 
 /* Window */
@@ -34,12 +34,20 @@ body{
   top:30px;
   left:50%;
   transform:translateX(-50%);
-  width:200px;
-  height:140px;
-  border-radius:12px;
-  background:linear-gradient(#0b132b,#1c2541);
-  transition:background 5s ease;
-  box-shadow:inset 0 0 20px rgba(0,0,0,0.6);
+  width:220px;
+  height:150px;
+  border-radius:14px;
+  background:linear-gradient(#cce7ff,#fefae0);
+  overflow:hidden;
+  transition:all 4s ease;
+}
+
+.star{
+  position:absolute;
+  color:white;
+  font-size:12px;
+  opacity:0;
+  cursor:pointer;
 }
 
 /* Sun */
@@ -47,57 +55,71 @@ body{
   position:absolute;
   width:40px;
   height:40px;
-  border-radius:50%;
   background:#ffd166;
-  top:90px;
-  left:80px;
-  opacity:0;
-  transition:all 5s ease;
+  border-radius:50%;
+  top:20px;
+  right:20px;
+  transition:all 4s ease;
 }
 
-/* Flowers */
-.flower{
+/* Candle */
+.candle{
   position:absolute;
-  font-size:18px;
-  opacity:0.7;
-  animation:floatFlower 10s linear infinite;
-}
-
-@keyframes floatFlower{
-  0%{transform:translateY(0);opacity:0}
-  20%{opacity:0.6}
-  100%{transform:translateY(-200px);opacity:0}
-}
-
-/* Lamp */
-.lamp{
-  position:absolute;
-  bottom:40px;
+  bottom:130px;
   left:50%;
   transform:translateX(-50%);
-  width:90px;
-  height:130px;
-  border-radius:45px 45px 10px 10px;
-  background:#444;
+  width:60px;
+  height:100px;
+  background:rgba(255,240,200,0.6);
+  border-radius:12px;
+  box-shadow:inset 0 0 20px rgba(255,200,120,0.6);
   cursor:pointer;
-  transition:all 3s ease;
 }
 
-.lamp.on{
-  background:#ffe5b4;
-  box-shadow:0 0 160px 80px rgba(255,220,160,0.7);
+.flame{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;
+  height:22px;
+  background:orange;
+  border-radius:50%;
+  animation:flicker 1s infinite;
 }
 
-/* Text */
+@keyframes flicker{
+  0%,100%{transform:translateX(-50%) scale(1);}
+  50%{transform:translateX(-50%) scale(1.2);}
+}
+
+/* Tulip Garden */
+.garden{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:120px;
+  background:linear-gradient(#8bc34a,#558b2f);
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-end;
+  padding-bottom:10px;
+}
+
+.tulip{
+  font-size:26px;
+}
+
+/* Floating text */
 .text{
   position:absolute;
-  bottom:190px;
+  bottom:260px;
   width:100%;
   text-align:center;
   font-size:15px;
-  color:#3b3b3b;
+  color:#444;
   opacity:0;
-  animation:fadeUp 8s ease forwards;
+  animation:floatText 9s ease forwards;
 }
 
 .text span{
@@ -105,15 +127,26 @@ body{
   animation:letter 0.05s forwards;
 }
 
-@keyframes letter{
-  to{opacity:1}
+@keyframes letter{to{opacity:1}}
+@keyframes floatText{
+  0%{transform:translateY(20px);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-140px);opacity:0}
 }
 
-@keyframes fadeUp{
-  0%{transform:translateY(20px);opacity:0}
-  20%{opacity:0.8}
-  100%{transform:translateY(-120px);opacity:0}
+/* Secret message */
+.secret{
+  position:absolute;
+  bottom:200px;
+  width:100%;
+  text-align:center;
+  font-size:16px;
+  color:#e75480;
+  opacity:0;
+  animation:fadeIn 2s forwards;
 }
+
+@keyframes fadeIn{to{opacity:1}}
 </style>
 </head>
 
@@ -124,64 +157,84 @@ body{
     <div class="sun" id="sun"></div>
   </div>
 
-  <div class="lamp" id="lamp"></div>
+  <div class="candle" id="candle">
+    <div class="flame"></div>
+  </div>
+
+  <div class="garden">
+    <div class="tulip">🌷</div>
+    <div class="tulip">🌷</div>
+    <div class="tulip">🌷</div>
+    <div class="tulip">🌷</div>
+    <div class="tulip">🌷</div>
+  </div>
 </div>
 
 <script>
-const lamp = document.getElementById("lamp");
+const candle = document.getElementById("candle");
 const windowEl = document.getElementById("window");
 const sun = document.getElementById("sun");
 const room = document.querySelector(".room");
 
-const lines = [
-  "mommy, you make my world calm",
-  "everything feels softer with you",
-  "mommy, you are my safe place",
-  "thinking of you makes me smile",
-  "you bring peace to my heart, mommy",
-  "life feels gentle with you around",
-  "i feel warm and happy, mommy 🤍",
-  "thank you for being you, mommy"
+const messages = [
+  "mommy, you make my mornings soft",
+  "everything feels warm with you",
+  "i smile thinking about you",
+  "you are my calm place, mommy",
+  "this little world feels better because of you 🤍"
 ];
 
-lamp.addEventListener("click",()=>{
-  lamp.classList.add("on");
-
-  // Night to day
-  document.body.style.background="linear-gradient(#87ceeb,#fefae0)";
-  windowEl.style.background="linear-gradient(#87ceeb,#fefae0)";
-  sun.style.opacity="1";
-  sun.style.top="20px";
-
-  // Flowers
-  setInterval(()=>{
-    const f=document.createElement("div");
-    f.className="flower";
-    f.innerText="🌸";
-    f.style.left=Math.random()*300+"px";
-    f.style.bottom="0px";
-    room.appendChild(f);
-    setTimeout(()=>f.remove(),10000);
-  },1200);
+candle.addEventListener("click",()=>{
+  sun.style.top="5px";
+  sun.style.right="10px";
+  windowEl.style.background="linear-gradient(#ffecd2,#fcb69f)";
 
   let i=0;
   const interval=setInterval(()=>{
-    if(i>=lines.length){clearInterval(interval);return;}
-
+    if(i>=messages.length){clearInterval(interval);return;}
     const t=document.createElement("div");
     t.className="text";
-    for(let j=0;j<lines[i].length;j++){
+    for(let j=0;j<messages[i].length;j++){
       const s=document.createElement("span");
-      s.innerText=lines[i][j];
+      s.innerText=messages[i][j];
       s.style.animationDelay=(j*0.05)+"s";
       t.appendChild(s);
     }
     room.appendChild(t);
-    setTimeout(()=>t.remove(),8000);
+    setTimeout(()=>t.remove(),9000);
     i++;
   },2500);
 
-  lamp.style.pointerEvents="none";
+  // Night stars after delay
+  setTimeout(()=>{
+    windowEl.style.background="linear-gradient(#0b132b,#1c2541)";
+    sun.style.opacity="0";
+    for(let i=0;i<6;i++){
+      const star=document.createElement("div");
+      star.className="star";
+      star.innerText="★";
+      star.style.left=Math.random()*200+"px";
+      star.style.top=Math.random()*120+"px";
+      star.style.opacity="1";
+      star.onclick=()=>{
+        alert("mommy, you’re my little universe ✨");
+      };
+      windowEl.appendChild(star);
+    }
+  },16000);
+});
+
+/* Secret keyboard message */
+let typed="";
+document.addEventListener("keydown",(e)=>{
+  typed+=e.key.toLowerCase();
+  if(typed.includes("i love you baby")){
+    const s=document.createElement("div");
+    s.className="secret";
+    s.innerText="i love you too mommy 🤍";
+    room.appendChild(s);
+    typed="";
+  }
 });
 </script>
 

@@ -1,189 +1,189 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🤍 My Mommy</title>
+<title>For My Mommy 🤍</title>
 
 <style>
-/* Reset & Body */
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
   height:100vh;
+  background:linear-gradient(#0b132b,#1c2541);
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#121212;
-  transition: background 4s ease;
-  font-family:'Inter', sans-serif;
+  font-family:'Inter',sans-serif;
+  overflow:hidden;
+  transition:background 5s ease;
+}
+
+/* Room */
+.room{
+  position:relative;
+  width:320px;
+  height:520px;
+  border-radius:20px;
+  background:#1a1a1a;
   overflow:hidden;
 }
 
-/* Room container */
-.room {
-  position:relative;
-  width:80%;
-  max-width:300px;
-  height:400px;
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
+/* Window */
+.window{
+  position:absolute;
+  top:30px;
+  left:50%;
+  transform:translateX(-50%);
+  width:200px;
+  height:140px;
+  border-radius:12px;
+  background:linear-gradient(#0b132b,#1c2541);
+  transition:background 5s ease;
+  box-shadow:inset 0 0 20px rgba(0,0,0,0.6);
+}
+
+/* Sun */
+.sun{
+  position:absolute;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#ffd166;
+  top:90px;
+  left:80px;
+  opacity:0;
+  transition:all 5s ease;
+}
+
+/* Flowers */
+.flower{
+  position:absolute;
+  font-size:18px;
+  opacity:0.7;
+  animation:floatFlower 10s linear infinite;
+}
+
+@keyframes floatFlower{
+  0%{transform:translateY(0);opacity:0}
+  20%{opacity:0.6}
+  100%{transform:translateY(-200px);opacity:0}
 }
 
 /* Lamp */
-.lamp {
+.lamp{
+  position:absolute;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
   width:90px;
   height:130px;
-  border-radius:45px 45px 12px 12px;
-  background:#3a3a3a;
+  border-radius:45px 45px 10px 10px;
+  background:#444;
   cursor:pointer;
-  transition: background 2s ease, box-shadow 3s ease;
+  transition:all 3s ease;
 }
 
-.lamp.on {
-  background:#ffdca0;
-  box-shadow:0 0 160px 60px rgba(255,220,160,0.7);
+.lamp.on{
+  background:#ffe5b4;
+  box-shadow:0 0 160px 80px rgba(255,220,160,0.7);
 }
 
-/* Glow */
-.glow {
+/* Text */
+.text{
   position:absolute;
-  top:-100px;
+  bottom:190px;
   width:100%;
-  max-width:300px;
-  height:260px;
-  background:radial-gradient(circle, rgba(255,220,160,0.45), transparent 70%);
-  opacity:0;
-  transition: opacity 3s ease;
-  pointer-events:none;
-}
-
-.glow.on { opacity:1; }
-
-/* Particle (sentence) */
-.particle {
-  position:absolute;
-  font-size:16px;
-  color:rgba(60,60,60,0.85);
-  white-space:nowrap;
   text-align:center;
-  max-width:220px;
-  left:0; right:0; margin:0 auto;
+  font-size:15px;
+  color:#3b3b3b;
   opacity:0;
-  pointer-events:none;
+  animation:fadeUp 8s ease forwards;
 }
 
-.particle span {
+.text span{
   opacity:0;
-  display:inline-block;
-  animation: fadeInLetter 0.05s forwards;
+  animation:letter 0.05s forwards;
 }
 
-@keyframes fadeInLetter {
-  to { opacity:1; }
+@keyframes letter{
+  to{opacity:1}
 }
 
-/* Heart pulse */
-.heart {
-  display:inline-block;
-  color: rgba(255,100,100,0.8);
-  margin-left:6px;
-  animation: pulse 1s ease infinite;
-}
-
-@keyframes pulse {
-  0%{transform:scale(1);}
-  50%{transform:scale(1.3);}
-  100%{transform:scale(1);}
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity:0; }
-  20% { opacity:0.6; }
-  100% { transform: translateY(-160px); opacity:0; }
-}
-
-@media(max-width:500px){
-  .particle { font-size:14px; }
+@keyframes fadeUp{
+  0%{transform:translateY(20px);opacity:0}
+  20%{opacity:0.8}
+  100%{transform:translateY(-120px);opacity:0}
 }
 </style>
 </head>
 
 <body>
+
 <div class="room">
-  <div class="glow" id="glow"></div>
+  <div class="window" id="window">
+    <div class="sun" id="sun"></div>
+  </div>
+
   <div class="lamp" id="lamp"></div>
 </div>
 
 <script>
 const lamp = document.getElementById("lamp");
-const glow = document.getElementById("glow");
+const windowEl = document.getElementById("window");
+const sun = document.getElementById("sun");
+const room = document.querySelector(".room");
 
-const sentences = [
-  "mommy, you make everything calm",
-  "i feel safe with you, mommy",
-  "rest now, mommy, i’m here",
-  "mommy, you’re my comfort",
-  "my heart feels warm with you, mommy",
-  "everything is soft when i think of you, mommy",
-  "mommy, i love how you care for me",
-  "stay close, mommy, i feel happy",
-  "mommy, you make life gentle and sweet",
-  "i’m so lucky to have you, mommy",
-  "my baby heart smiles with you, mommy",
-  "thank you for being my calm, mommy 🤍"
+const lines = [
+  "mommy, you make my world calm",
+  "everything feels softer with you",
+  "mommy, you are my safe place",
+  "thinking of you makes me smile",
+  "you bring peace to my heart, mommy",
+  "life feels gentle with you around",
+  "i feel warm and happy, mommy 🤍",
+  "thank you for being you, mommy"
 ];
 
-lamp.addEventListener("click", () => {
+lamp.addEventListener("click",()=>{
   lamp.classList.add("on");
-  glow.classList.add("on");
-  document.body.style.background = "#f4efe6";
 
-  let index = 0;
+  // Night to day
+  document.body.style.background="linear-gradient(#87ceeb,#fefae0)";
+  windowEl.style.background="linear-gradient(#87ceeb,#fefae0)";
+  sun.style.opacity="1";
+  sun.style.top="20px";
 
-  const interval = setInterval(() => {
-    if(index >= sentences.length){
-      clearInterval(interval);
-      return;
+  // Flowers
+  setInterval(()=>{
+    const f=document.createElement("div");
+    f.className="flower";
+    f.innerText="🌸";
+    f.style.left=Math.random()*300+"px";
+    f.style.bottom="0px";
+    room.appendChild(f);
+    setTimeout(()=>f.remove(),10000);
+  },1200);
+
+  let i=0;
+  const interval=setInterval(()=>{
+    if(i>=lines.length){clearInterval(interval);return;}
+
+    const t=document.createElement("div");
+    t.className="text";
+    for(let j=0;j<lines[i].length;j++){
+      const s=document.createElement("span");
+      s.innerText=lines[i][j];
+      s.style.animationDelay=(j*0.05)+"s";
+      t.appendChild(s);
     }
+    room.appendChild(t);
+    setTimeout(()=>t.remove(),8000);
+    i++;
+  },2500);
 
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.bottom = "60px";
-
-    // Random horizontal offset for natural feel
-    const randomOffset = Math.random()*40 - 20;
-    p.style.transform = `translateX(${randomOffset}px)`;
-
-    // Wrap letters in span for fade in effect
-    const sentence = sentences[index];
-    p.innerHTML = "";
-    for(let i=0;i<sentence.length;i++){
-      const span = document.createElement("span");
-      span.innerText = sentence[i];
-      span.style.animationDelay = (i*0.05) + "s";
-      p.appendChild(span);
-    }
-
-    // Add a tiny heart occasionally
-    if(Math.random() > 0.7){
-      const heart = document.createElement("span");
-      heart.className = "heart";
-      heart.innerText = "❤";
-      p.appendChild(heart);
-    }
-
-    document.querySelector(".room").appendChild(p);
-
-    p.style.animation = "floatUp 9s ease forwards";
-
-    // Remove after 9s
-    setTimeout(()=>p.remove(),9000);
-
-    index++;
-  },2000);
-
-  lamp.style.pointerEvents = "none";
+  lamp.style.pointerEvents="none";
 });
 </script>
+
 </body>
 </html>
